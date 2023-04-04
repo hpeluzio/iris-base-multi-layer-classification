@@ -1,6 +1,7 @@
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.utils import np_utils
 
 base = pd.read_csv('iris.csv')
 predictors = base.iloc[:,0:4].values
@@ -9,10 +10,14 @@ classes = base.iloc[:,4].values
 from sklearn.preprocessing import LabelEncoder
 labelencoder = LabelEncoder()
 classes = labelencoder.fit_transform(classes)
+classes_dummy = np_utils.to_categorical(classes)
+# iris setosa      1 0 0
+# iris virginica   0 1 0
+# iris versicolor  0 0 1
 
 from sklearn.model_selection import train_test_split
 predictors_training, predictors_test, classes_training, classes_test = train_test_split(
-    predictors, classes, test_size=0.25)
+    predictors, classes_dummy, test_size=0.25)
 
 classifier = Sequential()
 classifier.add(Dense(units = 4, activation = 'relu', input_dim = 4))
