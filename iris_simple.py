@@ -27,3 +27,12 @@ classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
                    metrics = ['categorical_accuracy'])
 classifier.fit(predictors_training, classes_training, batch_size = 10,
                epochs = 1000)
+result = classifier.evaluate(predictors_test, classes_test)
+predictions = classifier.predict(predictors_test)
+predictions = (predictions > 0.5)
+import numpy as np
+classes_test2 = [np.argmax(t) for t in classes_test]
+predictions2 = [np.argmax(t) for t in predictions]
+
+from sklearn.metrics import confusion_matrix
+matriz = confusion_matrix(predictions2, classes_test2)
